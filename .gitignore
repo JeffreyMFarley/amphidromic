@@ -9,6 +9,9 @@
 /tmp
 *.err
 
+# Ignore Temporary Data FIles
+/data/*.txt
+
 # Don't store api keys in source control
 .env
 
