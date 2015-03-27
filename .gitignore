@@ -3,3 +3,15 @@
 
 # Visual Studio
 *.suo
+
+# Ignore all logfiles and tempfiles.
+/log/*.log
+/tmp
+*.err
+
+# Don't store api keys in source control
+.env
+
+# Ignore bundler config.
+/.bundle
+/bower_components
