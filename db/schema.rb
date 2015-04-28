@@ -16,14 +16,17 @@ ActiveRecord::Schema.define(version: 0) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "Station", id: false, force: :cascade do |t|
-    t.string  "id",         limit: 10,                          null: false
-    t.string  "area",       limit: 50
-    t.string  "name",       limit: 60
-    t.date    "start_date",                                     null: false
+  create_table :station, id: false, force: :cascade do |t|
+    t.string  "station_id", limit: 10,                          null: false
+    t.string  "area",       limit: 30
+    t.string  "name",       limit: 75
+    t.date    "start_date"
     t.date    "end_date"
+	t.boolean  :active
     t.decimal "lat",                   precision: 10, scale: 6
     t.decimal "lng",                   precision: 10, scale: 6
   end
+
+  add_index :station, [:station_id], name: "index_station_on_station_id", unique: true, using: :btree
 
 end

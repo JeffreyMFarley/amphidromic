@@ -5,3 +5,10 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+json = File.read('data/noaa_station_list.json')
+stations = JSON.parse(json)
+
+stations.each do |id, station|
+	Station.create(station)
+end

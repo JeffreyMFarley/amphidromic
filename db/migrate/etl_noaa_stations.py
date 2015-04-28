@@ -56,12 +56,12 @@ class StationListParser(html.parser.HTMLParser):
     def enterStation(self, da):
         assert self.status == NoaaParseState.inArea
         self.current = {}
-        self.current['id'] = da['id']
+        self.current['station_id'] = da['id']
         self.current['area'] = self.area
         self.status = NoaaParseState.inStation
 
     def exitStation(self):
-        self.stations[self.current['id']] = self.current
+        self.stations[self.current['station_id']] = self.current
         self.current = None
         self.status = NoaaParseState.inArea
 
@@ -85,8 +85,8 @@ class StationListParser(html.parser.HTMLParser):
         startDate = None if not start else time.strptime(start.strip(), inFormat)
         endDate = None if 'present' in end else time.strptime(end.strip(), inFormat)
 
-        self.current['startDate'] = '' if not startDate else time.strftime(iso8601, startDate)
-        self.current['endDate'] = '' if not endDate else time.strftime(iso8601, endDate)
+        self.current['start_date'] = '' if not startDate else time.strftime(iso8601, startDate)
+        self.current['end_date'] = '' if not endDate else time.strftime(iso8601, endDate)
         self.current['active'] = not endDate
         self.status = NoaaParseState.inStation
 
@@ -106,6 +106,11 @@ if __name__ == '__main__':
     fn = os.path.join(thisScriptDir, INPUT)
     parser = StationListParser()
     parser.parse(fn)
+
+    # determine maxes for schema def
+    for col in ['name', 'area', 'station_id']:
+        lengths = [len(v[col]) for k,v in parser.stations.items()]
+        print('Max',col,'length', max(lengths))
 
     # save as JSON
     print('Saving as JSON')
